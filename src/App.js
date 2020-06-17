@@ -11,23 +11,19 @@ class App extends Component {
   ],
     showForm: true
   }
-
   toggleForm = () => this.setState({ showForm: !this.state.showForm })
-
   getId = () => {
     // NOTE We are just using this as a helper function for id's since we aren't using a db yet
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
       .substring(1);
   };
-
   // { firstName: 'bob', phone: '134134-13241234' }
   addContact = (incomingContact) => {
     const { contacts } = this.state
     const newContact = { id: this.getId(), ...incomingContact }
     this.setState({ contacts: [ newContact, ...contacts ]})
   }
-
   deleteContact = (id) => {
     const contacts = this.state.contacts.filter( contact => {
       if (contact.id !== id) {
@@ -36,17 +32,27 @@ class App extends Component {
     })
     this.setState({ contacts })
   }
-
+  updateContact = (id, updatedContact) => {
+    const { contacts } = this.state;
+    this.setState({
+      contacts: contacts.map( c => {
+        if (c.id === id) {
+          return { ...updatedContact }
+        }
+        return c
+      })
+    })
+  }
   render() {
     const { contacts, showForm } = this.state
     return(
       <div>
         <div>
-          <Button icon color='green' onClick={ this.toggleForm}>
-            <Icon name={showForm ? 'angle double up': 'angle double down'} />
+          <Button icon color='blue' onClick={this.toggleForm}>
+            <Icon name={ showForm ? 'angle double up': 'angle double down'} />
           </Button>
-          {
-            showForm ? 
+          { 
+            showForm ?
             <ContactForm addContact={this.addContact} />
             :
             null
@@ -55,7 +61,11 @@ class App extends Component {
         <Header size="huge" color='blue' textAlign='center'>
           Contact list
         </Header>
-        <Contacts contacts={contacts} deleteContact={this.deleteContact}/>
+        <Contacts 
+          contacts={contacts} 
+          deleteContact={this.deleteContact} 
+          updateContact={this.updateContact}
+        />
       </div>
     )
   }

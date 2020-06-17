@@ -3,12 +3,14 @@ import { Form } from 'semantic-ui-react';
 class ContactForm extends Component {
   state = { firstName: '', phone: '' }
   // change the state to be the user input
+  
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
     // this.setState({ firstName: 'bob' })
     // this.setState({ phone: '1123-123-1233' })
   }
+
   handleSubmit = (e) => {
     e.preventDefault();
     // add the contact to the array of obj
@@ -16,6 +18,7 @@ class ContactForm extends Component {
     // clear out the form
     this.setState({ firstName: '', phone: '' })
   }
+
   render() {
     const { firstName, phone } = this.state
     return(
